@@ -1,8 +1,8 @@
+import getGApi from 'google-client-api'
+
 export var CLIENT_ID = "206827991320-j3m3knj85n3o0trnvtfmn3ohqo7mpbbg.apps.googleusercontent.com";
 export var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"];
 export var SCOPES = "https://www.googleapis.com/auth/calendar";
-
-var getGApi = require('google-client-api')
 
 export function getUpcomingEvents(callback) {
   getGApi().then((gapi) => {
