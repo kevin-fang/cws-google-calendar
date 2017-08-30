@@ -14,16 +14,25 @@ const alignedStyle = {
 	marginLeft: 24
 }
 
-// a sample class, just for formatting purposes
+/* a sample class, just for formatting purposes
+
 var sampleClass = {
 	period: Periods.tuesday.first,
 	name: "Relativity",
 	room: '4B',
 	date: '2017-09-12',
 	recurrence: "weekly" // 'single' or 'weekly'
-}
 
+}
+*/
+
+function disableWeekends(date) {
+	return date.getDay() === 0 || date.getDay() === 6;
+  }
+  
 var daysOfWeek = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday']
+
+var daysOfWeekCapitalized = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
 
 export class FormComponent extends Component {
 	constructor(props) {
@@ -33,11 +42,10 @@ export class FormComponent extends Component {
 			dayOfWeek: 0, // 0-4
 			periodOfDay: "first",
 			room: "",
-			date: "",
+			date: null,
 			weekly: true,
 			calendarId: 'primary'
 		}
-		this.handleDayChange = this.handleDayChange.bind(this)
 		this.handlePeriodChange = this.handlePeriodChange.bind(this)
 		this.handleWeeklyToggle = this.handleWeeklyToggle.bind(this)
 		this.handleDateChange = this.handleDateChange.bind(this)
@@ -52,10 +60,6 @@ export class FormComponent extends Component {
 	handlePeriodChange(event, index, value) {
 		this.setState({periodOfDay: value})
 	}
-
-	handleDayChange(event, index, value) {
-		this.setState({dayOfWeek: value, date: ""})
-	}
 	
 	handleDateChange(event, date) {
 		this.setState({date: date, dayOfWeek: date.getDay() - 1})
@@ -68,7 +72,7 @@ export class FormComponent extends Component {
 				alert("Please fill out class name")
 				return false
 			}
-			if (this.state.date === "") {
+			if (this.state.date === null) {
 				alert("Please fill out date")
 				return false
 			}
@@ -106,7 +110,7 @@ export class FormComponent extends Component {
 		var period = Periods[daysOfWeek[this.state.dayOfWeek]][this.state.periodOfDay]
 		return period.startTime + '-' + period.endTime
 	}
-
+	
 	render() {
 		return (
 			<div>
@@ -115,35 +119,33 @@ export class FormComponent extends Component {
 					<br/>
 					<TextField floatingLabelText="Room Name" style={alignedStyle} onChange={(e, s) => {this.setState({room: s})}}/>
 					<br/>
-					<DropDownMenu value={this.state.dayOfWeek}
-						onChange={this.handleDayChange}>
-						<MenuItem value={0} primaryText="Monday"/>
-						<MenuItem value={1} primaryText="Tuesday"/>
-						<MenuItem value={2} primaryText="Wednesday"/>
-						<MenuItem value={3} primaryText="Thursday"/>
-						<MenuItem value={4} primaryText="Friday"/>
-					</DropDownMenu>
-					
-					<DropDownMenu value={this.state.periodOfDay}
-						onChange={this.handlePeriodChange}>
-						<MenuItem value={"first"} primaryText="Period 1"/>
-						<MenuItem value={"second"} primaryText="Period 2"/>
-						<MenuItem value={"third"} primaryText="Period 3"/>
-						<MenuItem value={"fourth"} primaryText="Period 4"/>
-						<MenuItem value={"fifth"} primaryText="Period 5"/>
-						<MenuItem value={"sixth"} primaryText="Period 6"/>
-						<MenuItem value={"seventh"} primaryText="Period 7"/>
-					</DropDownMenu>
-					<br/>
-					<div style={{marginLeft: 72, color: 'grey'}}>{this.getTimes()}</div>
-					<br/>
 					<DatePicker hintText={this.state.weekly ? "Date of first class" : "Date of class"} 
-						style={alignedStyle} 
+						style={{marginLeft: 24, marginTop: 16}} 
 						firstDayOfWeek={0}
-						locale="en-US"
 						autoOk={true}
+						locale="en-US"
+						shouldDisableDate={disableWeekends}
 						value={this.state.date}
 						onChange={this.handleDateChange}/>
+					<br/>
+
+					<div style={{display: 'flex'}}>
+						<div style={{marginLeft: 24, marginTop: 20}}>{daysOfWeekCapitalized[this.state.dayOfWeek]}</div>
+						
+						<DropDownMenu value={this.state.periodOfDay}
+							style={{marginLeft: 72}}
+							onChange={this.handlePeriodChange}>
+							<MenuItem value={"first"} primaryText="Period 1"/>
+							<MenuItem value={"second"} primaryText="Period 2"/>
+							<MenuItem value={"third"} primaryText="Period 3"/>
+							<MenuItem value={"fourth"} primaryText="Period 4"/>
+							<MenuItem value={"fifth"} primaryText="Period 5"/>
+							<MenuItem value={"sixth"} primaryText="Period 6"/>
+							<MenuItem value={"seventh"} primaryText="Period 7"/>
+						</DropDownMenu>
+					</div>
+					<br/>
+					<div style={{marginLeft: 72, color: 'grey'}}>{this.getTimes()}</div>
 					<br/>
 					<Toggle label={this.state.weekly ? "Weekly" : "One Day Only"} 
 						style={{maxWidth: 250, marginLeft: 24}} 
