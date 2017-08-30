@@ -41,6 +41,7 @@ export class FormComponent extends Component {
 		this.handleWeeklyToggle = this.handleWeeklyToggle.bind(this)
 		this.handleDateChange = this.handleDateChange.bind(this)
 		this.handleSubmit = this.handleSubmit.bind(this)
+		this.getTimes = this.getTimes.bind(this)
 	}
 
 	handleWeeklyToggle() {
@@ -96,8 +97,12 @@ export class FormComponent extends Component {
 			//alert(JSON.stringify(classInfo))
 			this.props.handleSubmit(classInfo, this.state.calendarId)
 		} 
-		
 	} 
+	
+	getTimes() {
+		var period = Periods[daysOfWeek[this.state.dayOfWeek]][this.state.periodOfDay]
+		return period.startTime + '-' + period.endTime
+	}
 
 	render() {
 		return (
@@ -126,6 +131,9 @@ export class FormComponent extends Component {
 						<MenuItem value={"sixth"} primaryText="Period 6"/>
 						<MenuItem value={"seventh"} primaryText="Period 7"/>
 					</DropDownMenu>
+					<br/>
+					<div style={{marginLeft: 72, color: 'grey'}}>{this.getTimes()}</div>
+					<br/>
 					<DatePicker hintText={this.state.weekly ? "Date of first class" : "Date of class"} 
 						style={alignedStyle} 
 						firstDayOfWeek={0}
