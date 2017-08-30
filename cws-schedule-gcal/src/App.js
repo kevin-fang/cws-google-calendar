@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { CLIENT_ID, DISCOVERY_DOCS, SCOPES, getUpcomingEvents, addClass } from './Api.js'
 import getGApi from 'google-client-api'
-import periods from './periods.js'
 import { FormComponent } from './FormComponent.js'
 
 // material design stuff
@@ -12,22 +11,13 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
 
 injectTapEventPlugin();
+
 const muiTheme = getMuiTheme({
 	margin: 0,
 	appBar: {
 		height: 70
 	}
 })
-
-var sampleClass = {
-	day: periods.tuesday,
-	period: periods.tuesday.first,
-	name: "Relativity",
-	room: '4B',
-	date: '2017-09-12',
-	recurrence: "weekly" // 'single' or 'weekly'
-}
-
 
 class App extends Component{
 	constructor(props) {
@@ -38,35 +28,36 @@ class App extends Component{
 		};
 		this.initClient = this.initClient.bind(this);
 		this.updateSigninStatus = this.updateSigninStatus.bind(this);
-		this.createAndAddClass = this.createAndAddClass.bind(this);
 	}
 
+	// handle the 'authorize application' button click on first run
 	handleAuthClick(){
 		getGApi().then((gapi) => {
 			gapi.auth2.getAuthInstance().signIn();
 		})
 	}
 	
+	// handle the signout application
 	handleSignoutClick(){
 		getGApi().then((gapi) => {
 			gapi.auth2.getAuthInstance().signOut();
 		})
 	}
 
+	// handle once the client finishes loading
 	handleClientLoad() {
 		getGApi().then((gapi) => {
 			gapi.load('client:auth2', this.initClient);
 		})
 	}
 
+	// updates whether the user is signed in/has been previously signed in
 	updateSigninStatus(isSignedIn) {
 		if (isSignedIn) {
 			this.setState({
 				showAuthButton: false,
 				showSignOutButton: true
 			})
-
-			getUpcomingEvents()
 		} else {
 			this.setState({
 				showAuthButton: true,
@@ -75,8 +66,9 @@ class App extends Component{
 		}
 	}
 
+	// initializes the client
 	initClient() {
-		var _this = this;
+		var _this = this; // save the 'this' item, so it can be used inside the callback
 		getGApi().then((gapi) => {
 			gapi.client.init({
 				discoveryDocs: DISCOVERY_DOCS,
@@ -90,15 +82,13 @@ class App extends Component{
 		})
 	}
 
+	// handle the client loading once the component finishes mounting
 	componentDidMount(){
 		this.handleClientLoad();
 	}
 
-	createAndAddClass(classInfo) {
-		addClass(classInfo)
-	}
-
 	render() {
+		// used because for easier readability
 		let authButton = <RaisedButton label="Authorize Application" onClick={this.handleAuthClick.bind(this)} primary={true} style={{margin: 24}} />
 		let signOutButton = <RaisedButton label="Sign out" onClick={this.handleSignoutClick.bind(this)} secondary={true} style={{marginLeft: 24}} />
 		return(

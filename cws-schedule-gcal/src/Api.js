@@ -4,28 +4,13 @@ export var CLIENT_ID = "206827991320-j3m3knj85n3o0trnvtfmn3ohqo7mpbbg.apps.googl
 export var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"];
 export var SCOPES = "https://www.googleapis.com/auth/calendar";
 
-export function getUpcomingEvents(callback) {
-  getGApi().then((gapi) => {
-    gapi.client.calendar.events.list({
-      'calendarId': 'primary',
-      'timeMin': (new Date()).toISOString(),
-      'showDeleted': false,
-      'singleEvents': true,
-      'maxResults': 10,
-      'orderBy': 'startTime'
-    }).then(function(response) {
-      var events = response.result.items;
-      callback(JSON.stringify(events))
-    });
-  })
-}
-
-// create a formatted date time
+// create a formatted date time for the google calendar api
 // ('2017-09-12', '08:30:00') => '2017-09-12T08:30:00'
 function createDateTime(date, time) {
   return (date + "T" + time)
 }
 
+// create an event from the class info
 function createEvent(classInfo) {
   return {
       summary: classInfo.name,
@@ -48,6 +33,7 @@ function createEvent(classInfo) {
   }
 }
 
+// add a class to the calendar API
 export function addClass(classInfo, calendarId) {
   getGApi().then((gapi) => {
     var request = gapi.client.calendar.events.insert({

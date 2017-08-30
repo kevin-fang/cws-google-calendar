@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Periods from './periods.js'
 
-// material design stuff
+// material design stuff from material-ui
 import TextField from 'material-ui/TextField'
 import DropDownMenu from 'material-ui/DropDownMenu'
 import MenuItem from 'material-ui/MenuItem'
@@ -14,6 +14,7 @@ const alignedStyle = {
 	marginLeft: 24
 }
 
+// a sample class, just for formatting purposes
 var sampleClass = {
 	period: Periods.tuesday.first,
 	name: "Relativity",
@@ -61,6 +62,7 @@ export class FormComponent extends Component {
 	} 
 
 	handleSubmit() {
+		// check if the details filled out are valid, mostly the class name and date
 		const validSettings = () => {
 			if (this.state.className === "") {
 				alert("Please fill out class name")
@@ -84,8 +86,8 @@ export class FormComponent extends Component {
 			var year = date.getFullYear()
 			return year + '-' + month + '-' + dayOfMonth
 		}
-		// create the object 
-		
+
+		// create the class info object object 
 		if (validSettings()) {
 			var classInfo = {
 				period: Periods[daysOfWeek[this.state.dayOfWeek]][this.state.periodOfDay],
@@ -99,6 +101,7 @@ export class FormComponent extends Component {
 		} 
 	} 
 	
+	// get the times for the selected period
 	getTimes() {
 		var period = Periods[daysOfWeek[this.state.dayOfWeek]][this.state.periodOfDay]
 		return period.startTime + '-' + period.endTime
