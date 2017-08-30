@@ -48,10 +48,10 @@ function createEvent(classInfo) {
   }
 }
 
-export function addClass(classInfo) {
+export function addClass(classInfo, calendarId) {
   getGApi().then((gapi) => {
     var request = gapi.client.calendar.events.insert({
-        calendarId: 'primary',
+        calendarId: calendarId,
         resource: createEvent(classInfo)
     })
     request.execute((event) => {

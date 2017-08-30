@@ -33,7 +33,8 @@ export class FormComponent extends Component {
 			periodOfDay: "first",
 			room: "",
 			date: "",
-			weekly: true
+			weekly: true,
+			calendarId: 'primary'
 		}
 		this.handleDayChange = this.handleDayChange.bind(this)
 		this.handlePeriodChange = this.handlePeriodChange.bind(this)
@@ -93,7 +94,7 @@ export class FormComponent extends Component {
 				recurrence: this.state.weekly ? "weekly" : "single"
 			} 
 			//alert(JSON.stringify(classInfo))
-			this.props.handleSubmit(classInfo)
+			this.props.handleSubmit(classInfo, this.state.calendarId)
 		} 
 		
 	} 
@@ -101,7 +102,7 @@ export class FormComponent extends Component {
 	render() {
 		return (
 			<div>
-				<Paper style={{maxWidth: 300, margin: 24}} zDepth={3}>
+				<Paper style={{minWidth: 300, maxWidth: 300, margin: 24}} zDepth={4}>
 					<TextField floatingLabelText="Class Name" style={alignedStyle} onChange={(e, s) => this.setState({className: s})}/>
 					<br/>
 					<TextField floatingLabelText="Room Name" style={alignedStyle} onChange={(e, s) => {this.setState({room: s})}}/>
@@ -145,6 +146,17 @@ export class FormComponent extends Component {
 						primary={true} 
 						style={{marginLeft: 24, marginBottom: 24}} 
 						onClick={this.handleSubmit}/>
+					<TextField
+						style={{marginLeft: 24}}
+      					hintText="Calendar ID (default is primary)"
+						onChange={(e, s) => {
+							if (s !== "") {
+								this.setState({calendarId: s})
+							} else {
+								this.setState({calendarId: 'primary'})
+							}
+						}}/>
+					<br/>
 				</Paper>
 			</div>
 		)

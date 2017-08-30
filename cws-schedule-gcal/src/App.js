@@ -99,26 +99,27 @@ class App extends Component{
 	}
 
 	render() {
-		let authButton = <RaisedButton label="Authorize" onClick={this.handleAuthClick.bind(this)} primary={true} style={{marginLeft: 24}} />
+		let authButton = <RaisedButton label="Authorize Application" onClick={this.handleAuthClick.bind(this)} primary={true} style={{margin: 24}} />
 		let signOutButton = <RaisedButton label="Sign out" onClick={this.handleSignoutClick.bind(this)} secondary={true} style={{marginLeft: 24}} />
 		return(
 			<MuiThemeProvider muiTheme={muiTheme}>
 			<div>
 				<AppBar
 					showMenuIconButton={false}
-					title="Commonwealth GCal Scheduler"/>
+					title="CWS Scheduler for Google Calendar"/>
 					<div style={{margin: 8}}>
 						{this.state.showAuthButton ? authButton : null}
 						{this.state.showSignOutButton ? (
 							<div>
 								<FormComponent
-									handleSubmit={ (classInfo) => { addClass(classInfo) } }
+									handleSubmit={ (classInfo, calendarId) => { addClass(classInfo, calendarId) } }
 									style={{marginBottom: 0}}/>
-								<br/>
+							
 								{signOutButton}
 							</div>
 						 ) : null}
 					</div>
+					<div style={{color: 'grey', position: 'absolute', minWidth: 175, height: 30, bottom: 0, right: 0}}>Made by Kevin Fang</div>
 			</div>
 		</MuiThemeProvider>
 		)
