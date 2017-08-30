@@ -55,7 +55,7 @@ export function addClass(classInfo, calendarId) {
         resource: createEvent(classInfo)
     })
     request.execute((event) => {
-      if (window.confirm('Event created. Click "ok" to visit the event')) {
+      if (window.confirm('Event created. Click OK to visit the event')) {
         window.open(event.htmlLink);
       };
     })
