@@ -1,115 +1,63 @@
-import 'fs';
-import $ from 'jquery';
-var google = require('googleapis');
-var googleAuth = require('google-auth-library');
-var content = require(process.env.PUBLIC_URL + './client_secret.json')
-var periods = require(process.env.PUBLIC_URL + './periods.js')
+export var CLIENT_ID = "206827991320-j3m3knj85n3o0trnvtfmn3ohqo7mpbbg.apps.googleusercontent.com";
+export var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"];
+export var SCOPES = "https://www.googleapis.com/auth/calendar";
 
-// If modifying these scopes, delete your previously saved credentials
-// at ~/.credentials/calendar-nodejs-quickstart.json
-var SCOPES = ['https://www.googleapis.com/auth/calendar'];
+var getGApi = require('google-client-api')
 
-const classInfo = {
-    day: periods.tuesday,
-    period: periods.tuesday.first,
-    name: "Relativity",
-    room: '4B',
-    date: '2017-09-12',
-    recurrence: "weekly" // 'single' or 'weekly'
-}
-
-// Load client secrets from a local file.
-export function authorize() {
-    var oauth2Client = authorize(JSON.parse(content))
-    return oauth2Client;
-}
-
-/**
- * Create an OAuth2 client with the given credentials, and then execute the
- * given callback function.
- *
- * @param {Object} credentials The authorization client credentials.
- * @param {function} callback The callback to call with the authorized client.
- */
-function authorize(credentials, callback) {
-  var clientSecret = credentials.installed.client_secret;
-  var clientId = credentials.installed.client_id;
-  var redirectUrl = credentials.installed.redirect_uris[0];
-  var auth = new googleAuth();
-  var oauth2Client = new auth.OAuth2(clientId, clientSecret, redirectUrl);
-
-  // get a new token
-  return oauth2Client;
-  //getNewToken(oauth2Client, callback);
-}
-
-/**
- * Get and store new token after prompting for user authorization, and then
- * execute the given callback with the authorized OAuth2 client.
- *
- * @param {google.auth.OAuth2} oauth2Client The OAuth2 client to get token for.
- * @param {getEventsCallback} callback The callback to call with the authorized
- *     client.
- */
-function getNewToken(oauth2Client, callback) {
-  var authUrl = oauth2Client.generateAuthUrl({
-    access_type: 'offline',
-    scope: SCOPES
-  });
-  var code = prompt('Authorize this app by visiting this url: ', authUrl)
-  if (code != null) {
-    oauth2Client.getToken(code, function(err, token) {
-        if (err) {
-          alert('Error while trying to retrieve access token', err);
-          return;
-        }
-        oauth2Client.credentials = token;
-        callback(oauth2Client);
-      });
-  }
+export function getUpcomingEvents(callback) {
+  getGApi().then((gapi) => {
+    gapi.client.calendar.events.list({
+      'calendarId': 'primary',
+      'timeMin': (new Date()).toISOString(),
+      'showDeleted': false,
+      'singleEvents': true,
+      'maxResults': 10,
+      'orderBy': 'startTime'
+    }).then(function(response) {
+      var events = response.result.items;
+      callback(JSON.stringify(events))
+    });
+  })
 }
 
 // create a formatted date time
 // ('2017-09-12', '08:30:00') => '2017-09-12T08:30:00'
 function createDateTime(date, time) {
-    return (date + "T" + time)
+  return (date + "T" + time)
 }
 
 function createEvent(classInfo) {
-    return {
-        summary: classInfo.name,
-        location: classInfo.room,
-        start: {
-            dateTime: createDateTime(classInfo.date, classInfo.period.startTime),
-            timeZone: 'America/New_York'
-        },
-        end: {
-            dateTime: createDateTime(classInfo.date, classInfo.period.endTime),
-            timeZone: 'America/New_York'
-        },
-        recurrence: [
-            classInfo.recurrence === 'weekly' ? 'RRULE:FREQ=WEEKLY;UNTIL=20180531' : null
-        ],
-        reminders: {
-            useDefault: true
-        }
-    }
+  return {
+      summary: classInfo.name,
+      location: classInfo.room,
+      start: {
+          dateTime: createDateTime(classInfo.date, classInfo.period.startTime),
+          timeZone: 'America/New_York'
+      },
+      end: {
+          dateTime: createDateTime(classInfo.date, classInfo.period.endTime),
+          timeZone: 'America/New_York'
+      },
+      recurrence: [
+          classInfo.recurrence === 'weekly' ? 'RRULE:FREQ=WEEKLY;UNTIL=20180531' : null
+          //'RRULE:FREQ=WEEKLY;UNTIL=20180531'
+      ],
+      reminders: {
+          useDefault: true
+      }
+  }
 }
 
-function addEvent(auth) {
-    
-    var calendar = google.calendar('v3');
-    calendar.events.insert({
-        auth: auth,
-        //calendarId: '639uf4qd2s0j7bu3gauh70arf8@group.calendar.google.com',
+export function addClass(classInfo) {
+  getGApi().then((gapi) => {
+    var request = gapi.client.calendar.events.insert({
         calendarId: 'primary',
         resource: createEvent(classInfo)
-    }, (err, event) => {
-        if (err) {
-            alert("There was an error contacting the calendar service: " + err)
-            return
-        }
-        alert('Event created: %s', event.htmlLink);
     })
-    alert(JSON.stringify(createEvent(classInfo)))
+    request.execute((event) => {
+      if (window.confirm('Event created. Click "ok" to visit the event')) {
+        window.open(event.htmlLink);
+      };
+    })
+  })
 }
