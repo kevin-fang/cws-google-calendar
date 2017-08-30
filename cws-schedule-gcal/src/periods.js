@@ -108,5 +108,6 @@ module.exports = {
     wednesday: monday,
     friday: monday,
     tuesday: tuesday,
-    thursday: thursday
+    thursday: thursday,
+    sports: sports
 }
