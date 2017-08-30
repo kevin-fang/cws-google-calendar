@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { CLIENT_ID, DISCOVERY_DOCS, SCOPES, getUpcomingEvents, addClass } from './Api.js'
+import { CLIENT_ID, DISCOVERY_DOCS, SCOPES, addClass } from './Api.js'
 import getGApi from 'google-client-api'
 import { FormComponent } from './FormComponent.js'
 
@@ -89,7 +89,7 @@ class App extends Component{
 
 	render() {
 		// used because for easier readability
-		let authButton = <RaisedButton label="Authorize Application" onClick={this.handleAuthClick.bind(this)} primary={true} style={{margin: 24}} />
+		let authButton = <RaisedButton label="Authorize Application" onClick={this.handleAuthClick.bind(this)} secondary={true} style={{margin: 24}} />
 		let signOutButton = <RaisedButton label="Sign out" onClick={this.handleSignoutClick.bind(this)} secondary={true} style={{marginLeft: 24}} />
 		return(
 			<MuiThemeProvider muiTheme={muiTheme}>
@@ -98,13 +98,20 @@ class App extends Component{
 					showMenuIconButton={false}
 					title="CWS Scheduler for Google Calendar"/>
 					<div style={{margin: 8}}>
-						{this.state.showAuthButton ? authButton : null}
+						{this.state.showAuthButton ? (
+							<div>
+								{authButton}
+								<div style={{marginLeft: 24}}>T.</div>
+								<div style={{marginLeft: 24}}>Once you log in, further instructions will show up.</div>
+							</div>
+						): null}
 						{this.state.showSignOutButton ? (
 							<div>
+								<a href="https://calendar.google.com" style={{marginLeft: 24}}>Google Calendar</a><br/><br/>
+								<div style={{marginLeft: 24}}>Fill the boxes below with the according information, and click "Add Class." If you wish to add the class to another calendar, go to <a href="calendar.google.com">Google Calendar</a>, find the alternate calendar, click 'Calendar Settings,' copy the Calendar ID in the 'Calendar Address' field, and then paste it into the Calendar ID box in the form below.</div>
 								<FormComponent
 									handleSubmit={ (classInfo, calendarId) => { addClass(classInfo, calendarId) } }
 									style={{marginBottom: 0}}/>
-							
 								{signOutButton}
 							</div>
 						 ) : null}
