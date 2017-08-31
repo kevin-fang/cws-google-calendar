@@ -108,7 +108,7 @@ class App extends Component{
 						): null}
 						{this.state.showSignOutButton ? (
 							<div>
-								<Paper style={{margin: 24, minWidth: 300, wordBreak: 'break-all'}} zDepth={4}>
+								<Paper style={{margin: 24, minWidth: 300, maxWidth: 500, wordBreak: 'break-word'}} zDepth={4}>
 									<div style={{padding: 24}}>
 										<a href="https://calendar.google.com">Click here to go to Google Calendar</a><br/><br/>
 										Fill the boxes below with the according information, and click "Add Class." <br/><br/>
