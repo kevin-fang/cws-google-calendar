@@ -9,9 +9,14 @@ export var SCOPES = "https://www.googleapis.com/auth/calendar";
 function createDateTime(date, time) {
   return (date + "T" + time)
 }
-
+function padNumber(num, size) {
+  var s = String(num);
+  while (s.length < (size || 2)) {s = "0" + s;}
+  return s;
+}
 // create an event from the class info
-function createEvent(classInfo) {
+function createEvent(classInfo, lastDay) {
+  alert(String(lastDay.getFullYear()) + padNumber(lastDay.getMonth() + 1) + String(lastDay.getDate()))
   return {
       summary: classInfo.name,
       location: classInfo.room,
@@ -24,8 +29,8 @@ function createEvent(classInfo) {
           timeZone: 'America/New_York'
       },
       recurrence: [
-          classInfo.recurrence === 'weekly' ? 'RRULE:FREQ=WEEKLY;UNTIL=20180531' : null
-          //'RRULE:FREQ=WEEKLY;UNTIL=20180531'
+          //classInfo.recurrence === 'weekly' ? 'RRULE:FREQ=WEEKLY;UNTIL=20180531' : null
+          classInfo.recurrence === 'weekly' ? 'RRULE:FREQ=WEEKLY;UNTIL=' + String(lastDay.getFullYear()) + padNumber(lastDay.getMonth() + 1) + String(lastDay.getDate()) : null
       ],
       reminders: {
           useDefault: false,
@@ -40,11 +45,11 @@ function createEvent(classInfo) {
 }
 
 // add a class to the calendar API
-export function addClass(classInfo, calendarId) {
+export function addClass(classInfo, calendarId, lastDay) {
   getGApi().then((gapi) => {
     var request = gapi.client.calendar.events.insert({
         calendarId: calendarId,
-        resource: createEvent(classInfo)
+        resource: createEvent(classInfo, lastDay)
     })
     request.execute((event) => {
       if (window.confirm('Event created. Click OK to visit the event (you may have to enable popups)')) {

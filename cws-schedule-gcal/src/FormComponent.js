@@ -34,6 +34,13 @@ var daysOfWeek = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday']
 
 var daysOfWeekCapitalized = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
 
+/*
+  TODO:
+	  * add variable last day of school
+	  * add sports
+	  * add different way of confirming that event was added
+	  * CHOOSE WHETHER OR NOT TO USE SEMICOLONS
+*/
 export class FormComponent extends Component {
 	constructor(props) {
 		super(props)
@@ -44,13 +51,15 @@ export class FormComponent extends Component {
 			room: "",
 			date: null,
 			weekly: true,
-			calendarId: 'primary'
+			calendarId: 'primary',
+			lastDay: new Date(2018, 4, 31)
 		}
 		this.handlePeriodChange = this.handlePeriodChange.bind(this)
 		this.handleWeeklyToggle = this.handleWeeklyToggle.bind(this)
 		this.handleDateChange = this.handleDateChange.bind(this)
 		this.handleSubmit = this.handleSubmit.bind(this)
 		this.getTimes = this.getTimes.bind(this)
+		this.handleLastDayChange = this.handleLastDayChange.bind(this)
 	}
 
 	handleWeeklyToggle() {
@@ -63,6 +72,10 @@ export class FormComponent extends Component {
 	
 	handleDateChange(event, date) {
 		this.setState({date: date, dayOfWeek: date.getDay() - 1})
+	} 
+
+	handleLastDayChange(event, date) {
+		this.setState({lastDay: date})
 	} 
 
 	handleSubmit() {
@@ -101,7 +114,7 @@ export class FormComponent extends Component {
 				recurrence: this.state.weekly ? "weekly" : "single"
 			} 
 			//alert(JSON.stringify(classInfo))
-			this.props.handleSubmit(classInfo, this.state.calendarId)
+			this.props.handleSubmit(classInfo, this.state.calendarId, this.state.lastDay)
 		} 
 	} 
 	
@@ -119,7 +132,7 @@ export class FormComponent extends Component {
 					<br/>
 					<TextField floatingLabelText="Room Name" style={alignedStyle} onChange={(e, s) => {this.setState({room: s})}}/>
 					<br/>
-					<DatePicker hintText={this.state.weekly ? "Date of first class" : "Date of class"} 
+					<DatePicker floatingLabelText={this.state.weekly ? "Date of first class" : "Date of class"} 
 						style={{marginLeft: 24, marginTop: 16}} 
 						firstDayOfWeek={0}
 						autoOk={true}
@@ -161,7 +174,7 @@ export class FormComponent extends Component {
 						onClick={this.handleSubmit}/>
 					<TextField
 						style={{marginLeft: 24, marginBottom: 12}}
-      					hintText="Calendar ID (default is primary)"
+      					floatingLabelText="Calendar ID (empty = default)"
 						onChange={(e, s) => {
 							if (s !== "") {
 								this.setState({calendarId: s})
@@ -169,6 +182,18 @@ export class FormComponent extends Component {
 								this.setState({calendarId: 'primary'})
 							}
 						}}/>
+					<br/>
+					{this.state.weekly ? (
+						<DatePicker floatingLabelText="Last day of school"
+							style={{marginLeft: 24, marginTop: 16}} 
+							firstDayOfWeek={0}
+							autoOk={true}
+							locale="en-US"
+							shouldDisableDate={disableWeekends}
+							value={this.state.lastDay}
+							onChange={this.handleLastDayChange}/>
+						) : null
+					}
 					<br/>
 				</Paper>
 			</div>

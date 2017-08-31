@@ -5,10 +5,11 @@ import { FormComponent } from './FormComponent.js'
 
 // material design stuff
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import RaisedButton from 'material-ui/RaisedButton'
+import RaisedButton from 'material-ui/RaisedButton';
 import AppBar from 'material-ui/AppBar';
 import injectTapEventPlugin from 'react-tap-event-plugin';
-import getMuiTheme from 'material-ui/styles/getMuiTheme'
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import Paper from 'material-ui/Paper';
 
 injectTapEventPlugin();
 
@@ -107,12 +108,16 @@ class App extends Component{
 						): null}
 						{this.state.showSignOutButton ? (
 							<div>
-								<a href="https://calendar.google.com" style={{marginLeft: 24}}>Google Calendar</a><br/><br/>
-								<div style={{marginLeft: 24}}>Fill the boxes below with the according information, and click "Add Class." 
-									<br/>If you wish to add the class to another calendar, go to <a href="calendar.google.com">Google Calendar</a> and find the alternate calendar.
-									<br/>Click 'Calendar Settings,' copy the Calendar ID in the 'Calendar Address' field, and then paste it into the Calendar ID box in the form below.</div>
+								<Paper style={{margin: 24, minWidth: 700, maxWidth: 700}} zDepth={4}>
+									<div style={{padding: 24}}>
+										<a href="https://calendar.google.com">Click here to go to Google Calendar</a><br/><br/>
+										Fill the boxes below with the according information, and click "Add Class." <br/>
+										If you wish to add the class to another calendar, go to <a href="https://calendar.google.com/calendar/render#settings-calendars_9">Google Calendar</a> and click the alternate calendar.<br/>
+										Copy the Calendar ID in the 'Calendar Address' field, and then paste it into the Calendar ID box in the form below.
+									</div>
+								</Paper>
 								<FormComponent
-									handleSubmit={ (classInfo, calendarId) => { addClass(classInfo, calendarId) } }
+									handleSubmit={addClass}
 									style={{marginBottom: 0}}/>
 								{signOutButton}
 							</div>
