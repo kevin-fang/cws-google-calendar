@@ -1,3 +1,0 @@
-# CWS Scheduler for Google Calendar
-
-If you want to run this yourself, clone the repository, navigate to `cws-schedule-gcal/` and run `npm start`. Note that OAuth will not work if you're not running from kevin-fang.github.io/cws-google-calendar, as you need to get a new `CLIENT_ID` (instructions available [here](https://developers.google.com/google-apps/calendar/quickstart/js)). Simply replace the `CLIENT_ID` variable in `src/App.js` with the new key.

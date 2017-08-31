@@ -1,5 +1,5 @@
 {
-  "name": "cws-schedule-gcal",
+  "name": "cws-google-calendar",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
