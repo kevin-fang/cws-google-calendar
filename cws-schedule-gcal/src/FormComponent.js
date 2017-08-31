@@ -176,7 +176,7 @@ export class FormComponent extends Component {
 			  	label="Open Issue"
 			  	primary={true}
 			  	onClick={() => {
-				  	window.open("https://github.com/kevin-fang/cws-google-calendar/issues")}} />,
+				  	window.open("https://github.com/kevin-fang/cws-google-calendar/issues/new")}} />,
 		]
 		
 		return (
