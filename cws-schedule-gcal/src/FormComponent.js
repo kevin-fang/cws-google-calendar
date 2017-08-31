@@ -39,7 +39,6 @@ var daysOfWeekCapitalized = ["Monday", "Tuesday", "Wednesday", "Thursday", "Frid
 	  * add sports
 	  * use material design dialogs
 	  * add different way of confirming that event was added
-	  * CHOOSE WHETHER OR NOT TO USE SEMICOLONS
 */
 export class FormComponent extends Component {
 	constructor(props) {
