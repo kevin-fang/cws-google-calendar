@@ -44,20 +44,14 @@ function createEvent(classInfo, lastDay) {
 }
 
 // add a class to the calendar API
-export function addClass(classInfo, calendarId, lastDay) {
+export function addClass(classInfo, calendarId, lastDay, callback) {
 	getGApi().then((gapi) => {
 		var request = gapi.client.calendar.events.insert({
 				calendarId: calendarId,
 				resource: createEvent(classInfo, lastDay)
 		})
 		request.execute((event) => {
-			if (event.htmlLink === undefined) {
-				prompt("Something went wrong. Please open an issue at https://github.com/kevin-fang/cws-google-calendar/issues with the following message:", JSON.stringify({classInfo: classInfo, calendarId: calendarId, lastDay: lastDay}))
-			} else {
-				if (window.confirm('Event has been created & added to Google Calendar. Click OK to visit the event (you may have to enable popups), or click Cancel to dismiss this box.')) {
-					window.open(event.htmlLink)
-				}
-			}
+			callback(event.htmlLink)
 		})
 	})
 }

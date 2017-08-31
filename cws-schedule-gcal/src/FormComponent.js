@@ -9,6 +9,8 @@ import RaisedButton from 'material-ui/RaisedButton'
 import DatePicker from 'material-ui/DatePicker'
 import Toggle from 'material-ui/Toggle'
 import Paper from 'material-ui/Paper'
+import Dialog from 'material-ui/Dialog'
+import FlatButton from 'material-ui/FlatButton'
 
 const alignedStyle = {
 	marginLeft: 24
@@ -51,7 +53,9 @@ export class FormComponent extends Component {
 			date: null,
 			weekly: true,
 			calendarId: 'primary',
-			lastDay: new Date(2018, 4, 31)
+			lastDay: new Date(2018, 4, 31),
+			open: false,
+			eventLink: ""
 		}
 		this.handlePeriodChange = this.handlePeriodChange.bind(this)
 		this.handleWeeklyToggle = this.handleWeeklyToggle.bind(this)
@@ -59,6 +63,8 @@ export class FormComponent extends Component {
 		this.handleSubmit = this.handleSubmit.bind(this)
 		this.getTimes = this.getTimes.bind(this)
 		this.handleLastDayChange = this.handleLastDayChange.bind(this)
+		this.handleOpen = this.handleOpen.bind(this)
+		this.handleClose = this.handleClose.bind(this)
 	}
 
 	handleWeeklyToggle() {
@@ -113,7 +119,11 @@ export class FormComponent extends Component {
 				recurrence: this.state.weekly ? "weekly" : "single"
 			} 
 			//alert(JSON.stringify(classInfo))
-			this.props.handleSubmit(classInfo, this.state.calendarId, this.state.lastDay)
+			this.props.handleSubmit(classInfo, this.state.calendarId, this.state.lastDay, (htmlLink) => {
+				this.setState({eventLink: htmlLink}, () => {
+					this.handleOpen()
+				})
+			})
 		} 
 	} 
 	
@@ -123,9 +133,52 @@ export class FormComponent extends Component {
 		return period.startTime + '-' + period.endTime
 	}
 	
+	handleOpen = () => {
+		this.setState({open: true});
+	}
+	
+	handleClose = () => {
+		this.setState({open: false});
+	}
+	
 	render() {
+		const goodActions = [
+			<FlatButton
+			  label="Dismiss"
+			  primary={true}
+			  onClick={this.handleClose} />,
+			<FlatButton
+			  	label="Open Event Page"
+			  	primary={true}
+			  	onClick={() => {
+				  	this.handleClose()
+				  	window.open(this.state.eventLink)}} />,
+		]
+
+		const issueActions = [
+			<FlatButton
+			  label="Dismiss"
+			  primary={true}
+			  onClick={this.handleClose} />,
+			<FlatButton
+			  	label="Open Issue"
+			  	primary={true}
+			  	onClick={() => {
+				  	window.open("https://github.com/kevin-fang/cws-google-calendar/issues")}} />,
+		]
+		
 		return (
 			<div>
+				<Dialog title={this.state.eventLink === undefined ? "Error" : "Event Added"}
+					onRequestClose={this.handleClose}
+					model={false}
+					actions={this.state.eventLink === undefined ? issueActions : goodActions }
+					open={this.state.open}>
+						{this.state.eventLink === undefined ? 
+						"Something went wrong. Please open an issue on GitHub the following message: " + JSON.stringify({state: this.state})
+						: "Event has been created and added to Google Calendar. Click OK to visit the event (you may have to enable popups), or click Cancel to dismiss this box."}
+					</Dialog>
+
 				<Paper style={{minWidth: 300, maxWidth: 300, margin: 24}} zDepth={4}>
 					<TextField floatingLabelText="Class Name" style={alignedStyle} onChange={(e, s) => this.setState({className: s})}/>
 					<br/>
