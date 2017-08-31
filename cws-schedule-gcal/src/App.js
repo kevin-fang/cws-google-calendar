@@ -4,14 +4,14 @@ import getGApi from 'google-client-api'
 import { FormComponent } from './FormComponent.js'
 
 // material design stuff
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import RaisedButton from 'material-ui/RaisedButton';
-import AppBar from 'material-ui/AppBar';
-import injectTapEventPlugin from 'react-tap-event-plugin';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import Paper from 'material-ui/Paper';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import RaisedButton from 'material-ui/RaisedButton'
+import AppBar from 'material-ui/AppBar'
+import injectTapEventPlugin from 'react-tap-event-plugin'
+import getMuiTheme from 'material-ui/styles/getMuiTheme'
+import Paper from 'material-ui/Paper'
 
-injectTapEventPlugin();
+injectTapEventPlugin()
 
 const muiTheme = getMuiTheme({
 	margin: 0,
@@ -22,33 +22,33 @@ const muiTheme = getMuiTheme({
 
 class App extends Component{
 	constructor(props) {
-		super(props);
+		super(props)
 		this.state = {
 			showAuthButton: false,
 			showSignOutButton: false
-		};
-		this.initClient = this.initClient.bind(this);
-		this.updateSigninStatus = this.updateSigninStatus.bind(this);
+		}
+		this.initClient = this.initClient.bind(this)
+		this.updateSigninStatus = this.updateSigninStatus.bind(this)
 	}
 
 	// handle the 'authorize application' button click on first run
 	handleAuthClick(){
 		getGApi().then((gapi) => {
-			gapi.auth2.getAuthInstance().signIn();
+			gapi.auth2.getAuthInstance().signIn()
 		})
 	}
 	
 	// handle the signout application
 	handleSignoutClick(){
 		getGApi().then((gapi) => {
-			gapi.auth2.getAuthInstance().signOut();
+			gapi.auth2.getAuthInstance().signOut()
 		})
 	}
 
 	// handle once the client finishes loading
 	handleClientLoad() {
 		getGApi().then((gapi) => {
-			gapi.load('client:auth2', this.initClient);
+			gapi.load('client:auth2', this.initClient)
 		})
 	}
 
@@ -69,23 +69,23 @@ class App extends Component{
 
 	// initializes the client
 	initClient() {
-		var _this = this; // save the 'this' item, so it can be used inside the callback
+		var _this = this // save the 'this' item, so it can be used inside the callback
 		getGApi().then((gapi) => {
 			gapi.client.init({
 				discoveryDocs: DISCOVERY_DOCS,
 				clientId: CLIENT_ID,
 				scope: SCOPES
 			}).then(function () {
-				console.log(gapi);
-				gapi.auth2.getAuthInstance().isSignedIn.listen(_this.updateSigninStatus);
-				_this.updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
-			});
+				console.log(gapi)
+				gapi.auth2.getAuthInstance().isSignedIn.listen(_this.updateSigninStatus)
+				_this.updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get())
+			})
 		})
 	}
 
 	// handle the client loading once the component finishes mounting
 	componentDidMount(){
-		this.handleClientLoad();
+		this.handleClientLoad()
 	}
 
 	render() {
@@ -112,8 +112,9 @@ class App extends Component{
 									<div style={{padding: 24}}>
 										<a href="https://calendar.google.com">Click here to go to Google Calendar</a><br/><br/>
 										Fill the boxes below with the according information, and click "Add Class." <br/>
-										If you wish to add the class to another calendar, go to <a href="https://calendar.google.com/calendar/render#settings-calendars_9">Google Calendar</a> and click the alternate calendar.<br/>
-										Copy the Calendar ID in the 'Calendar Address' field, and then paste it into the Calendar ID box in the form below.
+										If you wish to add the class to another calendar, go to <a href="https://calendar.google.com/calendar/render#settings-calendars_9">Calendar Settings</a> and click the alternate calendar.<br/>
+										Copy the Calendar ID in the 'Calendar Address' field, and then paste it into the Calendar ID box in the form below.<br/>
+										It should look something like this: 639uf4qd2s0j7bu3gauh70arf8@group.calendar.google.com
 									</div>
 								</Paper>
 								<FormComponent
