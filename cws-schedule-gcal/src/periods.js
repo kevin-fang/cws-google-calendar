@@ -21,7 +21,7 @@ var monday = {
     },
     sixth: {
         startTime: "13:20:00",
-        endTime: "2:00:00"
+        endTime: "14:00:00"
     },
     seventh: {
         startTime: "14:05:00",
@@ -94,7 +94,7 @@ var thursday = {
         endTime: "15:20:00"
     },
     seventh: {
-        startTime: "15:35:00",
+        startTime: "15:25:00",
         endTime: "16:05:00"
     },
 }

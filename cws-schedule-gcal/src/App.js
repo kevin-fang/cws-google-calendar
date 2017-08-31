@@ -102,7 +102,7 @@ class App extends Component{
 							<div>
 								{authButton}
 								<div style={{marginLeft: 24}}>To use the scheduler, first click "Authorize Application" and log into your Google account.</div>
-								<div style={{marginLeft: 24}}>Once you log in, further instructions will be available.</div>
+								<div style={{marginLeft: 24}}>Once you log in, you will be able to add classes to your calendar.</div>
 							</div>
 						): null}
 						{this.state.showSignOutButton ? (
