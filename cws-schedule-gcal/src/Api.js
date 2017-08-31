@@ -17,29 +17,29 @@ function padNumber(num, size) {
 // create an event from the class info
 function createEvent(classInfo, lastDay) {
 	return {
-			summary: classInfo.name,
-			location: classInfo.room,
-			start: {
-					dateTime: createDateTime(classInfo.date, classInfo.period.startTime),
-					timeZone: 'America/New_York'
-			},
-			end: {
-					dateTime: createDateTime(classInfo.date, classInfo.period.endTime),
-					timeZone: 'America/New_York'
-			},
-			recurrence: [
-					//classInfo.recurrence === 'weekly' ? 'RRULE:FREQ=WEEKLY;UNTIL=20180531' : null
-					classInfo.recurrence === 'weekly' ? 'RRULE:FREQ=WEEKLY;UNTIL=' + String(lastDay.getFullYear()) + padNumber(lastDay.getMonth() + 1) + String(lastDay.getDate()) : null
-			],
-			reminders: {
-					useDefault: false,
-					overrides: [
-						{
-							method: 'popup',
-							minutes: 5
-						}
-					]
-			}
+		summary: classInfo.name,
+		location: classInfo.room,
+		start: {
+				dateTime: createDateTime(classInfo.date, classInfo.period.startTime),
+				timeZone: 'America/New_York'
+		},
+		end: {
+				dateTime: createDateTime(classInfo.date, classInfo.period.endTime),
+				timeZone: 'America/New_York'
+		},
+		recurrence: [
+				//classInfo.recurrence === 'weekly' ? 'RRULE:FREQ=WEEKLY;UNTIL=20180531' : null
+				classInfo.recurrence === 'weekly' ? 'RRULE:FREQ=WEEKLY;UNTIL=' + String(lastDay.getFullYear()) + padNumber(lastDay.getMonth() + 1) + String(lastDay.getDate()) : null
+		],
+		reminders: {
+				useDefault: false,
+				overrides: [
+					{
+						method: 'popup',
+						minutes: 5
+					}
+				]
+		}
 	}
 }
 
@@ -52,10 +52,11 @@ export function addClass(classInfo, calendarId, lastDay) {
 		})
 		request.execute((event) => {
 			if (event.htmlLink === undefined) {
-				alert("Something went wrong. Please copy your exact input and open an issue at https://github.com/kevin-fang/cws-google-calendar/issues.")
-			}
-			if (window.confirm('Event created. Click OK to visit the event (you may have to enable popups)')) {
-				window.open(event.htmlLink)
+				prompt("Something went wrong. Please open an issue at https://github.com/kevin-fang/cws-google-calendar/issues with the following message:", JSON.stringify({classInfo: classInfo, calendarId: calendarId, lastDay: lastDay}))
+			} else {
+				if (window.confirm('Event has been created & added to Google Calendar. Click OK to visit the event (you may have to enable popups), or click Cancel to dismiss this box.')) {
+					window.open(event.htmlLink)
+				}
 			}
 		})
 	})
