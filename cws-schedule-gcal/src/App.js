@@ -108,11 +108,11 @@ class App extends Component{
 						): null}
 						{this.state.showSignOutButton ? (
 							<div>
-								<Paper style={{margin: 24, minWidth: 700, maxWidth: 700}} zDepth={4}>
+								<Paper style={{margin: 24, minWidth: 300, wordBreak: 'break-all'}} zDepth={4}>
 									<div style={{padding: 24}}>
 										<a href="https://calendar.google.com">Click here to go to Google Calendar</a><br/><br/>
-										Fill the boxes below with the according information, and click "Add Class." <br/>
-										If you wish to add the class to another calendar, go to <a href="https://calendar.google.com/calendar/render#settings-calendars_9">Calendar Settings</a> and click the alternate calendar.<br/>
+										Fill the boxes below with the according information, and click "Add Class." <br/><br/>
+										If you wish to add the class to another calendar, go to <a href="https://calendar.google.com/calendar/render#settings-calendars_9">Calendar Settings</a> and click the alternate calendar.<br/><br/>
 										Copy the Calendar ID in the 'Calendar Address' field, and then paste it into the Calendar ID box in the form below.<br/>
 										It should look something like this: 639uf4qd2s0j7bu3gauh70arf8@group.calendar.google.com
 									</div>
