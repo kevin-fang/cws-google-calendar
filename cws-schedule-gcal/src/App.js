@@ -108,7 +108,9 @@ class App extends Component{
 						{this.state.showSignOutButton ? (
 							<div>
 								<a href="https://calendar.google.com" style={{marginLeft: 24}}>Google Calendar</a><br/><br/>
-								<div style={{marginLeft: 24}}>Fill the boxes below with the according information, and click "Add Class." <br/>If you wish to add the class to another calendar, go to <a href="calendar.google.com">Google Calendar</a>and find the alternate calendar.<br/>Click 'Calendar Settings,' copy the Calendar ID in the 'Calendar Address' field, and then paste it into the Calendar ID box in the form below.</div>
+								<div style={{marginLeft: 24}}>Fill the boxes below with the according information, and click "Add Class." 
+									<br/>If you wish to add the class to another calendar, go to <a href="calendar.google.com">Google Calendar</a> and find the alternate calendar.
+									<br/>Click 'Calendar Settings,' copy the Calendar ID in the 'Calendar Address' field, and then paste it into the Calendar ID box in the form below.</div>
 								<FormComponent
 									handleSubmit={ (classInfo, calendarId) => { addClass(classInfo, calendarId) } }
 									style={{marginBottom: 0}}/>
