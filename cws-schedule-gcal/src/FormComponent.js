@@ -160,7 +160,7 @@ export class FormComponent extends Component {
 						style={{marginLeft: 24, marginBottom: 24}} 
 						onClick={this.handleSubmit}/>
 					<TextField
-						style={{marginLeft: 24}}
+						style={{marginLeft: 24, marginBottom: 12}}
       					hintText="Calendar ID (default is primary)"
 						onChange={(e, s) => {
 							if (s !== "") {
