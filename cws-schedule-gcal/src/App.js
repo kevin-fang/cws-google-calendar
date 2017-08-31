@@ -90,7 +90,7 @@ class App extends Component{
 
 	render() {
 		// used because for easier readability
-		let authButton = <RaisedButton label="Authorize Application" onClick={this.handleAuthClick.bind(this)} secondary={true} style={{margin: 24}} />
+		let authButton = <RaisedButton label="Authorize Application" onClick={this.handleAuthClick.bind(this)} secondary={true} style={{marginTop: 24}} />
 		let signOutButton = <RaisedButton label="Sign out" onClick={this.handleSignoutClick.bind(this)} secondary={true} style={{marginLeft: 24}} />
 		return(
 			<MuiThemeProvider muiTheme={muiTheme}>
@@ -100,10 +100,14 @@ class App extends Component{
 					title="CWS Scheduler for Google Calendar"/>
 					<div style={{margin: 8}}>
 						{this.state.showAuthButton ? (
-							<div>
+							<div style={{padding: 24}}>
+								<Paper style={{padding: 24, paddingBottom: 0, minWidth: 250, maxWidth: 550}}>
+									<div style={{fontSize: 24}}>Commonwealth Scheduler for Google Calendar</div><br/>
+									<div>To use the scheduler, click Authorize Application below and log into your Google account.</div>
+									<div>Once you log in, you will be able to add classes to your calendar.</div><br/>
+									<div style={{fontSize: 12, marginTop: 8, paddingBottom: 8}}>Made by Kevin Fang</div>
+								</Paper>
 								{authButton}
-								<div style={{marginLeft: 24}}>To use the scheduler, first click "Authorize Application" and log into your Google account.</div>
-								<div style={{marginLeft: 24}}>Once you log in, you will be able to add classes to your calendar.</div>
 							</div>
 						): null}
 						{this.state.showSignOutButton ? (
@@ -126,7 +130,7 @@ class App extends Component{
 							</div>
 						 ) : null}
 					</div>
-					<div style={{color: 'grey', position: 'absolute', minWidth: 175, height: 30, bottom: 0, right: 0}}>Made by Kevin Fang</div>
+					{/*<div style={{color: 'grey', position: 'absolute', minWidth: 175, height: 30, bottom: 0, right: 0}}>Made by Kevin Fang</div>*/}
 			</div>
 		</MuiThemeProvider>
 		)

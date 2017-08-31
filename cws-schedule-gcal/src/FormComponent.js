@@ -55,7 +55,8 @@ export class FormComponent extends Component {
 			calendarId: 'primary',
 			lastDay: new Date(2018, 4, 31),
 			open: false,
-			eventLink: ""
+			eventLink: "",
+			validSettings: false
 		}
 		this.handlePeriodChange = this.handlePeriodChange.bind(this)
 		this.handleWeeklyToggle = this.handleWeeklyToggle.bind(this)
@@ -65,6 +66,7 @@ export class FormComponent extends Component {
 		this.handleLastDayChange = this.handleLastDayChange.bind(this)
 		this.handleOpen = this.handleOpen.bind(this)
 		this.handleClose = this.handleClose.bind(this)
+		this.validSettings = this.validSettings.bind(this)
 	}
 
 	handleWeeklyToggle() {
@@ -77,25 +79,27 @@ export class FormComponent extends Component {
 	
 	handleDateChange(event, date) {
 		this.setState({date: date, dayOfWeek: date.getDay() - 1})
+		this.validateSettings();
 	} 
 
 	handleLastDayChange(event, date) {
 		this.setState({lastDay: date})
 	} 
 
-	handleSubmit() {
-		// check if the details filled out are valid, mostly the class name and date
-		const validSettings = () => {
-			if (this.state.className === "") {
-				alert("Please fill out class name")
-				return false
-			}
-			if (this.state.date === null) {
-				alert("Please fill out date")
-				return false
-			}
-			return true
+	// check if the details filled out are valid, importantly the class name and date
+	validSettings() {
+		if (this.state.className === "") {
+			//alert("Please fill out class name")
+			return false
 		}
+		if (this.state.date === null) {
+			//alert("Please fill out date")
+			return false
+		}
+		return true
+	}
+
+	handleSubmit() {
 		// format the date
 		const formatDate = (date) => {
 			var dayOfMonth = date.getDate()
@@ -110,7 +114,7 @@ export class FormComponent extends Component {
 		}
 
 		// create the class info object object 
-		if (validSettings()) {
+		if (this.validSettings()) {
 			var classInfo = {
 				period: Periods[daysOfWeek[this.state.dayOfWeek]][this.state.periodOfDay],
 				name: this.state.className,
@@ -126,6 +130,14 @@ export class FormComponent extends Component {
 			})
 		} 
 	} 
+
+	validateSettings() {
+		if (this.validSettings()) {
+			this.setState({validSettings: true})
+		} else {
+			this.setState({validSettings: false})
+		}
+	}
 	
 	// get the times for the selected period
 	getTimes() {
@@ -179,8 +191,12 @@ export class FormComponent extends Component {
 						: "Event has been created and added to Google Calendar. Click OK to visit the event (you may have to enable popups), or click Cancel to dismiss this box."}
 					</Dialog>
 
-				<Paper style={{minWidth: 300, maxWidth: 300, margin: 24}} zDepth={4}>
-					<TextField floatingLabelText="Class Name" style={alignedStyle} onChange={(e, s) => this.setState({className: s})}/>
+				<Paper style={{minWidth: 350, maxWidth: 500, margin: 24}} zDepth={4}>
+					<TextField floatingLabelText="Class Name" style={alignedStyle} onChange={(e, s) => {
+							this.setState({className: s})
+							this.validateSettings();
+						}
+					}/>
 					<br/>
 					<TextField floatingLabelText="Room Name" style={alignedStyle} onChange={(e, s) => {this.setState({room: s})}}/>
 					<br/>
@@ -221,9 +237,10 @@ export class FormComponent extends Component {
 						/>
 					<br/>
 					<RaisedButton label="Add Class" 
-						primary={true} 
+						primary={true}
+						disabled={!this.state.validSettings}
 						style={{marginLeft: 24, marginBottom: 24}} 
-						onClick={this.handleSubmit}/>
+						onClick={this.handleSubmit}/><br/>
 					<TextField
 						style={{marginLeft: 24, marginBottom: 12}}
       					floatingLabelText="Calendar ID (empty = default)"
