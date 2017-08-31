@@ -101,7 +101,7 @@ class App extends Component{
 						{this.state.showAuthButton ? (
 							<div>
 								{authButton}
-								<div style={{marginLeft: 24}}>T.</div>
+								<div style={{marginLeft: 24}}>To use the scheduler, first click "Authorize Application" and log into your Google account.</div>
 								<div style={{marginLeft: 24}}>Once you log in, further instructions will show up.</div>
 							</div>
 						): null}
