@@ -28,7 +28,13 @@ function createEvent(classInfo) {
           //'RRULE:FREQ=WEEKLY;UNTIL=20180531'
       ],
       reminders: {
-          useDefault: true
+          useDefault: false,
+          overrides: [
+            {
+              method: 'popup',
+              minutes: 5
+            }
+          ]
       }
   }
 }
