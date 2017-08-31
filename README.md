@@ -1,4 +1,4 @@
-# CWS Scheduler for Google Calendar 
+# Commonwealth Scheduler for Google Calendar 
 
 Available at https://kevin-fang.github.io/cws-google-calendar
 
