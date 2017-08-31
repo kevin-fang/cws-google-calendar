@@ -6,8 +6,8 @@ import TextField from 'material-ui/TextField'
 import DropDownMenu from 'material-ui/DropDownMenu'
 import MenuItem from 'material-ui/MenuItem'
 import RaisedButton from 'material-ui/RaisedButton'
-import DatePicker from 'material-ui/DatePicker';
-import Toggle from 'material-ui/Toggle';
+import DatePicker from 'material-ui/DatePicker'
+import Toggle from 'material-ui/Toggle'
 import Paper from 'material-ui/Paper'
 
 const alignedStyle = {
@@ -27,7 +27,7 @@ var sampleClass = {
 */
 
 function disableWeekends(date) {
-	return date.getDay() === 0 || date.getDay() === 6;
+	return date.getDay() === 0 || date.getDay() === 6
   }
   
 var daysOfWeek = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday']
@@ -36,8 +36,8 @@ var daysOfWeekCapitalized = ["Monday", "Tuesday", "Wednesday", "Thursday", "Frid
 
 /*
   TODO:
-	  * add variable last day of school
 	  * add sports
+	  * use material design dialogs
 	  * add different way of confirming that event was added
 	  * CHOOSE WHETHER OR NOT TO USE SEMICOLONS
 */
@@ -95,9 +95,9 @@ export class FormComponent extends Component {
 		const formatDate = (date) => {
 			var dayOfMonth = date.getDate()
 			const padNumber = (num, size) => {
-				var s = String(num);
-				while (s.length < (size || 2)) {s = "0" + s;}
-				return s;
+				var s = String(num)
+				while (s.length < (size || 2)) {s = "0" + s}
+				return s
 			}
 			var month = padNumber(date.getMonth() + 1, 2)
 			var year = date.getFullYear()
