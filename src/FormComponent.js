@@ -10,7 +10,10 @@ import DatePicker from 'material-ui/DatePicker'
 import Toggle from 'material-ui/Toggle'
 import Paper from 'material-ui/Paper'
 import Dialog from 'material-ui/Dialog'
+import AutoComplete from 'material-ui/AutoComplete'
 import FlatButton from 'material-ui/FlatButton'
+
+var courses = require('./courses.json').classes
 
 const alignedStyle = {
 	marginLeft: 24
@@ -24,7 +27,6 @@ var sampleClass = {
 	room: '4B',
 	date: '2017-09-12',
 	recurrence: "weekly" // 'single' or 'weekly'
-
 }
 */
 
@@ -50,7 +52,7 @@ export class FormComponent extends Component {
 			dayOfWeek: 0, // 0-4
 			periodOfDay: "first",
 			room: "",
-			date: null,
+			date: new Date(),
 			weekly: true,
 			calendarId: 'primary',
 			lastDay: new Date(2018, 4, 31),
@@ -67,6 +69,8 @@ export class FormComponent extends Component {
 		this.handleOpen = this.handleOpen.bind(this)
 		this.handleClose = this.handleClose.bind(this)
 		this.validSettings = this.validSettings.bind(this)
+		this.handleNewClassName = this.handleNewClassName.bind(this)
+		this.handleNameChange = this.handleNameChange.bind(this)
 	}
 
 	handleWeeklyToggle() {
@@ -85,6 +89,18 @@ export class FormComponent extends Component {
 	handleLastDayChange(event, date) {
 		this.setState({lastDay: date})
 	} 
+
+	handleNewClassName(request, index) {
+		this.setState({className: request}, () => {
+			this.validateSettings()
+		})
+	}
+
+	handleNameChange(searchText, dataSource, params) {
+		this.setState({className: searchText}, () => {
+			this.validateSettings()
+		})
+	}
 
 	// check if the details filled out are valid, importantly the class name and date
 	validSettings() {
@@ -192,11 +208,14 @@ export class FormComponent extends Component {
 					</Dialog>
 
 				<Paper style={{minWidth: 350, maxWidth: 500, margin: 24}} zDepth={4}>
-					<TextField floatingLabelText="Class Name" style={alignedStyle} onChange={(e, s) => {
-							this.setState({className: s})
-							this.validateSettings();
-						}
-					}/>
+					<AutoComplete floatingLabelText="Class Name" 
+						style={alignedStyle}
+						filter={AutoComplete.caseInsensitiveFilter}
+						onNewRequest={this.handleNewClassName}
+						maxSearchResults={6}
+						onUpdateInput={this.handleNameChange}
+						dataSource={courses}
+					/>
 					<br/>
 					<TextField floatingLabelText="Room Name" style={alignedStyle} onChange={(e, s) => {this.setState({room: s})}}/>
 					<br/>
