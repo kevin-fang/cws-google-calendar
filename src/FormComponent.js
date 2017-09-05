@@ -58,7 +58,8 @@ export class FormComponent extends Component {
 			lastDay: new Date(2018, 4, 31),
 			open: false,
 			eventLink: "",
-			validSettings: false
+			validSettings: false,
+			event: null
 		}
 		this.handlePeriodChange = this.handlePeriodChange.bind(this)
 		this.handleWeeklyToggle = this.handleWeeklyToggle.bind(this)
@@ -104,12 +105,7 @@ export class FormComponent extends Component {
 
 	// check if the details filled out are valid, importantly the class name and date
 	validSettings() {
-		if (this.state.className === "") {
-			//alert("Please fill out class name")
-			return false
-		}
-		if (this.state.date === null) {
-			//alert("Please fill out date")
+		if (this.state.className === "" || this.state.date === null) {
 			return false
 		}
 		return true
@@ -139,8 +135,8 @@ export class FormComponent extends Component {
 				recurrence: this.state.weekly ? "weekly" : "single"
 			} 
 			//alert(JSON.stringify(classInfo))
-			this.props.handleSubmit(classInfo, this.state.calendarId, this.state.lastDay, (htmlLink) => {
-				this.setState({eventLink: htmlLink}, () => {
+			this.props.handleSubmit(classInfo, this.state.calendarId, this.state.lastDay, (event) => {
+				this.setState({eventLink: event.htmlLink, event: event}, () => {
 					this.handleOpen()
 				})
 			})
@@ -192,7 +188,8 @@ export class FormComponent extends Component {
 			  	label="Open Issue"
 			  	primary={true}
 			  	onClick={() => {
-				  	window.open("https://github.com/kevin-fang/cws-google-calendar/issues/new")}} />,
+				  	window.open("https://github.com/kevin-fang/cws-google-calendar/issues/new?title=Class%fails%to%add&body=Replace%this%text%with%error%message")
+				}}/>
 		]
 		
 		return (
@@ -202,9 +199,15 @@ export class FormComponent extends Component {
 					model={false}
 					actions={this.state.eventLink === undefined ? issueActions : goodActions }
 					open={this.state.open}>
-						{this.state.eventLink === undefined ? 
-						"Something went wrong. Please open an issue on GitHub the following message: " + JSON.stringify({state: this.state})
-						: "Event has been created and added to Google Calendar. Click OK to visit the event (you may have to enable popups), or click Cancel to dismiss this box."}
+						{this.state.eventLink === undefined ? (
+							<div>
+								<span>"Something went wrong. Please open an issue on GitHub the following error message:</span> <br/>
+								<TextField 
+									defaultValue={JSON.stringify({state: this.state})}
+									style={{minWidth: 600}} />
+							</div>
+						) : 
+						"Event has been created and added to Google Calendar. Click OK to visit the event (you may have to enable popups), or click Cancel to dismiss this box."}
 					</Dialog>
 
 				<Paper style={{minWidth: 350, maxWidth: 500, margin: 24}} zDepth={4}>

@@ -29,7 +29,7 @@ function createEvent(classInfo, lastDay) {
 		},
 		recurrence: [
 				//classInfo.recurrence === 'weekly' ? 'RRULE:FREQ=WEEKLY;UNTIL=20180531' : null
-				classInfo.recurrence === 'weekly' ? 'RRULE:FREQ=WEEKLY;UNTIL=' + String(lastDay.getFullYear()) + padNumber(lastDay.getMonth() + 1) + String(lastDay.getDate()) : null
+				classInfo.recurrence === 'weekly' ? 'RRULE:FREQ=WEEKLY;UNTIL=' + String(lastDay.getFullYear()) + String(padNumber(lastDay.getMonth() + 1)) + String(padNumber(lastDay.getDate())) : null
 		],
 		reminders: {
 				useDefault: false,
@@ -51,7 +51,7 @@ export function addClass(classInfo, calendarId, lastDay, callback) {
 				resource: createEvent(classInfo, lastDay)
 		})
 		request.execute((event) => {
-			callback(event.htmlLink)
+			callback(event)
 		})
 	})
 }
