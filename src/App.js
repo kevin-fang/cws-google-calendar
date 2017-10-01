@@ -13,10 +13,16 @@ import Paper from 'material-ui/Paper'
 
 injectTapEventPlugin()
 
+// produce MuiTheme with CWS colors
 const muiTheme = getMuiTheme({
 	margin: 0,
 	appBar: {
 		height: 70
+	},
+	fontFamily: 'Roboto, sans-serif',
+	palette: {
+		primary1Color: '#b71c1c',
+		accent1Color: "#45585f"
 	}
 })
 
@@ -97,7 +103,7 @@ class App extends Component{
 			<div>
 				<AppBar
 					showMenuIconButton={false}
-					title="CWS Scheduler for Google Calendar"/>
+					title="CWS Google Scheduler"/>
 					<div style={{margin: 8}}>
 						{this.state.showAuthButton ? (
 							<div style={{padding: 24}}>
@@ -113,18 +119,17 @@ class App extends Component{
 						{this.state.showSignOutButton ? (
 							<div>
 								<div style={{display: 'flex', flexWrap: 'wrap', flexDirection: 'row'}}>
-									<Paper style={{margin: 24, minWidth: 300, maxWidth: 500, wordBreak: 'break-word'}} zDepth={4}>
-										<div style={{padding: 24}}>
-											<a href="https://calendar.google.com">Click here to go to Google Calendar</a><br/><br/>
-											Fill the boxes below with the according information, and click "Add Class." <br/><br/>
-											If you wish to add the class to another calendar, go to <a href="https://calendar.google.com/calendar/render#settings-calendars_9">Calendar Settings</a> and click the alternate calendar.<br/><br/>
-											Copy the Calendar ID in the 'Calendar Address' field, and then paste it into the Calendar ID box in the form below.<br/>
-											It should look something like this: 639uf4qd2s0j7bu3gauh70arf8@group.calendar.google.com
-										</div>
-									</Paper>
 									<FormComponent
 										handleSubmit={addClass}
 										style={{marginBottom: 0}}/>
+									<div style={{padding: 24}}>
+										<b>Instructions:</b><br/><br/>
+										<a href="https://calendar.google.com">Click here to go to Google Calendar</a><br/><br/>
+										Fill the boxes with the according information, and click "Add Class." <br/><br/>
+										If you wish to add the class to another calendar, go to <a href="https://calendar.google.com/calendar/render#settings-calendars_9">Calendar Settings</a> and click the alternate calendar.<br/><br/>
+										Copy the Calendar ID in the 'Calendar Address' field, and then paste it into the Calendar ID box in the form below.<br/>
+										It should look like this: 639uf4qd2s0j7bu3gauh70arf8@group.calendar.google.com
+									</div>
 								</div>
 								{signOutButton}
 							</div>
